@@ -8,6 +8,7 @@ import {
   useMotionValue, 
   useVelocity, 
   useAnimationFrame,
+  useMotionTemplate,
   AnimatePresence
 } from 'framer-motion';
 
@@ -17,21 +18,56 @@ const wrap = (min, max, v) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-// --- VARIANTES D'ANIMATION (CASCADE) ---
+// --- COMPOSANT SPOTLIGHT CARD (Lumière uniquement, pas de mouvement) ---
+function SpotlightCard({ children, className = "" }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <div
+      className={`relative border border-slate-800 bg-slate-900/50 overflow-hidden group ${className}`}
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(14, 165, 233, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <div className="relative h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// --- VARIANTES D'ANIMATION (CASCADE CLASSIQUE) ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
   }
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 15 }
+    transition: { type: "spring", stiffness: 50, damping: 20 } // Animation douce et lente
   }
 };
 
@@ -41,35 +77,38 @@ const projects = [
     title: "SaaS Indépendant",
     desc: "Dashboard analytique pour freelances. Architecture complexe (Auth, API, BDD) pour un apprentissage approfondi du SaaS.",
     tech: ["En developpement"],
-    github: "#", demo: null, color: "from-blue-500 to-cyan-500"
+    github: "#", demo: null, 
+    color: "from-blue-500 to-cyan-500" 
   },
   {
     title: "Master M&A",
     desc: "Site vitrine officiel pour l'association du Master 2 Paris Saclay. Design institutionnel, animations douces et SEO.",
     tech: ["HTML/CSS", "JS", "SEO"],
-    github: "#", demo: "#", color: "from-emerald-500 to-teal-500"
+    github: "#", demo: "#", 
+    color: "from-indigo-500 to-blue-600" 
   },
   {
     title: "Jeux",
     desc: "Application web de jeux (Motus, Mots mêlés). Logique algorithmique et gestion de base de données.",
-    tech: ["PHP", "MySQL", "CSS","HTML", "JS"],
-    github: "https://github.com/LoanKma/projet-web-v2", demo: null, color: "from-purple-500 to-pink-500"
+    tech: ["PHP", "MySQL", "CSS", "HTML", "JS"],
+    github: "https://github.com/LoanKma/projet-web-v2", demo: null, 
+    color: "from-emerald-500 to-cyan-500" 
   }
 ];
 
 const skills = [
-  { name: "Frontend", icon: <Code2 size={24} />, items: ["HTML", "CSS", "JS", "React en apprentissage", "Tailwind en apprentissage", "Framer Motion en apprentissage"] },
-  { name: "Backend", icon: <Database size={24} />, items: ["PHP", "MySQL"] },
-  { name: "Outils", icon: <Terminal size={24} />, items: ["Git", "VS Code", "Figma", "Vercel", "Trello"] },
+  { name: "Frontend", icon: <Code2 size={32} />, items: ["HTML", "CSS", "JS", "React (Learning)", "Tailwind (Learning)", "Framer Motion (Learning)"] },
+  { name: "Backend", icon: <Database size={32} />, items: ["PHP", "MySQL"] },
+  { name: "Outils", icon: <Terminal size={32} />, items: ["Git", "VS Code", "Figma", "Vercel", "Trello"] },
 ];
 
 const timelineData = [
-  { year: "2025 - Présent", title: "Bachelor Pro Développeur Full Stack", place: "ESEO, Angers", desc: "Algorithmique • Logique • Fondements informatique • Frontend (HTML, CSS, JS) • Backend (PHP) • Bases de données • POO • Réseau • Infrastructure • Cybersécurité • Web3 • Blockchain • Éco-conception • Git • Projet Web • Application de bureau • Anglais • Communication • Gestion de projet" },
-  { year: "2024 - Présent", title: "Expériences Professionnelles", place: "Nantes-Angers", desc: "Équipier polyvalent Domino’s Pizza – Agent de quai DPD – Livreur Deliveroo (actuel)" },
-  { year: "2024", title: "Formation Web3 Blockchain et stage au sein de la BBS School", place: "Hybride", desc: "Formation de 3 mois dédiée à la découverte du Web3 et de la Blockchain, suivie d’un stage d’un mois chez Metafight." },
+  { year: "2025 - Présent", title: "Bachelor Pro Développeur Full Stack", place: "ESEO, Angers", desc: "Algorithmique • Frontend/Backend • Bases de données • POO • Réseau • Cybersécurité • Web3 • Gestion de projet Agile." },
+  { year: "2024 - Présent", title: "Expériences Professionnelles", place: "Nantes-Angers", desc: "Équipier polyvalent Domino’s Pizza – Agent de quai DPD – Livreur Deliveroo (actuel)." },
+  { year: "2024", title: "Formation Web3 & Stage", place: "BBS School / Metafight", desc: "Formation intensive de 3 mois sur la Blockchain, suivie d’un stage d’un mois chez Metafight." },
 ];
 
-// --- COMPOSANTS DE FOND (ESPACE + PARTICULES) ---
+// --- FOND ---
 const MovingParticles = () => {
   const particles = [...Array(40)].map((_, i) => ({
     top: Math.random() * 100 + "%",
@@ -96,11 +135,11 @@ const SpaceBackground = () => (
   </div>
 );
 
-// --- NAVBAR STYLE IOS ---
+// --- NAVBAR ---
 const IOSDock = () => {
   const items = [
     { id: 'accueil', icon: <Home size={20} />, label: 'Accueil' },
-    { id: 'parcours', icon: <GitCommit size={20} />, label: 'Parcours' }, // Changé pour Parcours
+    { id: 'parcours', icon: <GitCommit size={20} />, label: 'Parcours' },
     { id: 'compétences', icon: <User size={20} />, label: 'Skills' },
     { id: 'projets', icon: <Folder size={20} />, label: 'Projets' },
     { id: 'contact', icon: <Send size={20} />, label: 'Contact' },
@@ -129,34 +168,48 @@ const IOSDock = () => {
   );
 };
 
-// --- COMPOSANTS DE SECTION ---
+// --- HERO (SIMPLE ET EFFICACE) ---
+const Hero = () => {
+  return (
+    <section id="accueil" className="min-h-screen flex items-center justify-center pt-32 relative overflow-hidden">
+      <div className="text-center px-4 max-w-5xl mx-auto z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-blue-300 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> Recherche Alternance
+        </motion.div>
+        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-8xl font-bold mb-6 text-white tracking-tight">
+          Développeur <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient">Full Stack</span>
+        </motion.h1>
+        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-slate-400 max-w-2xl mx-auto text-lg md:text-xl mb-10 leading-relaxed">
+          Je construis des expériences web modernes et performantes.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row justify-center gap-4">
+          <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projets" className="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2">
+            Voir mes travaux <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
+          </motion.a>
+          
+          <motion.a 
+            href="/cv.pdf" 
+            target="_blank" 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              backgroundSize: "200% 100%",
+              backgroundImage: "linear-gradient(110deg, rgba(30, 41, 59, 0.5) 45%, rgba(255, 255, 255, 0.3) 50%, rgba(30, 41, 59, 0.5) 55%)"
+            }}
+            animate={{ backgroundPosition: ["200% 0", "-200% 0"] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            className="px-8 py-4 rounded-full font-bold text-white border border-slate-700 backdrop-blur-sm flex items-center justify-center gap-2 shadow-lg"
+          >
+            <Download size={18} /> 
+            <span>Télécharger mon CV</span>
+          </motion.a>
 
-const Hero = () => (
-  <section id="accueil" className="min-h-screen flex items-center justify-center pt-32 relative overflow-hidden">
-    <div className="text-center px-4 max-w-5xl mx-auto z-10">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-blue-300 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-        <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> Recherche Alternance
-      </motion.div>
-      <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-8xl font-bold mb-6 text-white tracking-tight">
-        Développeur <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Full Stack</span>
-      </motion.h1>
-      <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-slate-400 max-w-2xl mx-auto text-lg md:text-xl mb-10 leading-relaxed">
-        Avec une grande envie d'apprendre et de monter en compétence, je m’investis pleinement dans chaque projet.
-      </motion.p>
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row justify-center gap-4">
-        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projets" className="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2">
-          Voir mes travaux <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/>
-        </motion.a>
-        {/* NOUVEAU : BOUTON CV */}
-        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="/cv.pdf" target="_blank" className="px-8 py-4 rounded-full font-bold text-white border border-slate-700 hover:bg-slate-800/80 backdrop-blur-sm transition-all flex items-center justify-center gap-2">
-          <Download size={18} /> Télécharger mon CV
-        </motion.a>
-      </motion.div>
-    </div>
-  </section>
-);
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
-// NOUVEAU : TERMINAL
 const TerminalBox = () => (
   <section className="py-20 px-4 max-w-4xl mx-auto">
     <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-[#0f172a]/90 backdrop-blur-md rounded-xl border border-slate-700 shadow-2xl overflow-hidden font-mono text-sm md:text-base">
@@ -165,23 +218,27 @@ const TerminalBox = () => (
         <span className="ml-2 text-slate-400 text-xs">maxime@portfolio: ~</span>
       </div>
       <div className="p-6 space-y-6 text-slate-300">
-        <div><div className="flex gap-2"><span className="text-blue-400">➜</span><span className="text-purple-400">~</span><span className="text-slate-200">whoami</span></div><p className="mt-2 text-slate-400 pl-4">Âgé de 21 ans, je suis actuellement en Bachelor Pro Développeur Full Stack à l’ESEO d’Angers. Passionné d’informatique depuis l’adolescence, j’ai d’abord exploré l’univers du montage de PC, puis celui des cryptomonnaies, avant de me diriger naturellement vers le développement.
-
-                                                                                                                                                                                                                                Mon parcours n’a pas été linéaire : après un Bac Pro Vente puis un BTS SAM qui ne correspondaient pas à mes ambitions, j’ai choisi de me réorienter. J’ai suivi une formation et un stage au sein de la BBS School, puis travaillé comme équipier polyvalent chez Domino’s Pizza.
-
-                                                                                                                                                                                                                                J’ai ensuite entrepris un voyage en solo d’un mois à Bali, une expérience marquante qui m’a permis de prendre du recul, de rencontrer de nouvelles personnes et de clarifier mes objectifs professionnels. À mon retour, j’ai trouvé ma voie : intégrer l’ESEO, une grande école d’ingénieurs reconnue, pour me former aux métiers du développement.
-
-                                                                                                                                                                                                                                Pour financer mes études, j’ai travaillé chez DPD, et j’exerce aujourd’hui un job étudiant en tant que livreur Deliveroo, tout en poursuivant ma formation.
-
-                                                                                                                                                                                                                                Ce parcours m’a appris la détermination, l’autonomie et la capacité à m’adapter. Aujourd’hui, je suis pleinement engagé dans mon objectif : devenir un développeur compétent, polyvalent et passionné.</p></div>
-        <div><div className="flex gap-2"><span className="text-blue-400">➜</span><span className="text-purple-400">~</span><span className="text-slate-200">current_stack</span></div><div className="mt-2 pl-4 flex flex-wrap gap-2">{['React', 'Node.js', 'Tailwind', 'Git'].map(t=><span key={t} className="text-emerald-400">"{t}"</span>)}</div></div>
+        
+        <div>
+          <div className="flex gap-2">
+            <span className="text-blue-400">➜</span>
+            <span className="text-purple-400">~</span>
+            <span className="text-slate-200">whoami</span>
+          </div>
+          <div className="mt-3 text-slate-400 pl-4 space-y-3 leading-relaxed">
+            <p>Âgé de 21 ans, je suis actuellement en Bachelor Pro Développeur Full Stack à l'ESEO d'Angers. Passionné d'informatique depuis l'adolescence, j'ai d'abord exploré l'univers du montage de PC, puis celui des cryptomonnaies, avant de me diriger naturellement vers le développement.</p>
+            <p>Mon parcours n'a pas été linéaire : après un Bac Pro Vente puis un BTS SAM qui ne correspondaient pas à mes ambitions, j'ai choisi de me réorienter. J'ai suivi une formation et un stage au sein de la BBS School, puis travaillé comme équipier polyvalent chez Domino's Pizza.</p>
+            <p>J'ai ensuite entrepris un voyage en solo d'un mois à Bali, une expérience marquante qui m'a permis de prendre du recul, de rencontrer de nouvelles personnes et de clarifier mes objectifs professionnels. À mon retour, j'ai trouvé ma voie : intégrer l'ESEO, une grande école d'ingénieurs reconnue, pour me former aux métiers du développement.</p>
+            <p>Pour financer mes études, j'ai travaillé chez DPD, et j'exerce aujourd'hui un job étudiant en tant que livreur Deliveroo, tout en poursuivant ma formation.</p>
+            <p>Ce parcours m'a appris la détermination, l'autonomie et la capacité à m'adapter. Aujourd'hui, je suis pleinement engagé dans mon objectif : devenir un développeur compétent, polyvalent et passionné.</p>
+          </div>
+        </div>
         <div className="flex gap-2 items-center"><span className="text-blue-400">➜</span><span className="text-purple-400">~</span><motion.div animate={{ opacity: [0, 1, 0] }} transition={{ duration: 0.8, repeat: Infinity }} className="w-2.5 h-5 bg-slate-400"/></div>
       </div>
     </motion.div>
   </section>
 );
 
-// NOUVEAU : TIMELINE
 const Timeline = () => (
   <section id="parcours" className="py-20 px-4 max-w-4xl mx-auto">
     <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-3xl font-bold mb-12 text-center text-white">Mon Parcours</motion.h2>
@@ -189,45 +246,36 @@ const Timeline = () => (
       {timelineData.map((item, index) => (
         <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="ml-8 relative">
           <span className="absolute -left-[41px] top-0 flex items-center justify-center w-6 h-6 bg-slate-900 border-2 border-blue-500 rounded-full"></span>
-          <h3 className="text-xl font-bold text-white">{item.title}</h3>
-          <div className="flex items-center gap-4 text-sm text-blue-400 mb-2 mt-1">
-            <span className="flex items-center gap-1"><Calendar size={14}/> {item.year}</span>
-            <span className="flex items-center gap-1"><MapPin size={14}/> {item.place}</span>
-          </div>
-          <p className="text-slate-400">{item.desc}</p>
+          
+          <SpotlightCard className="p-6 rounded-xl border border-slate-800 bg-slate-900/50">
+            <h3 className="text-xl font-bold text-white">{item.title}</h3>
+            <div className="flex items-center gap-4 text-sm text-blue-400 mb-2 mt-1">
+              <span className="flex items-center gap-1"><Calendar size={14}/> {item.year}</span>
+              <span className="flex items-center gap-1"><MapPin size={14}/> {item.place}</span>
+            </div>
+            <p className="text-slate-400">{item.desc}</p>
+          </SpotlightCard>
+
         </motion.div>
       ))}
     </div>
   </section>
 );
 
-// NOUVEAU : GITHUB ACTIVITY
-const GithubActivity = () => {
-  return (
-    <section className="py-20 border-y border-slate-800/50 bg-slate-900/30">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-2xl font-bold mb-8 text-white flex items-center justify-center gap-2">
-          <Github /> Activité GitHub
-        </h2>
-        {/* Simulation de grille de contribution */}
-        <div className="flex flex-wrap justify-center gap-1 opacity-80">
-          {[...Array(60)].map((_, i) => (
-            <motion.div 
-              key={i} 
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.01 }}
-              className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${Math.random() > 0.7 ? 'bg-emerald-500' : Math.random() > 0.4 ? 'bg-emerald-900' : 'bg-slate-800'}`}
-            />
-          ))}
-        </div>
-        <p className="mt-4 text-sm text-slate-500">Contributions sur les 2 derniers mois</p>
+const GithubActivity = () => (
+  <section className="py-20 border-y border-slate-800/50 bg-slate-900/30">
+    <div className="max-w-4xl mx-auto px-6 text-center">
+      <h2 className="text-2xl font-bold mb-8 text-white flex items-center justify-center gap-2"><Github /> Activité GitHub</h2>
+      <div className="flex flex-wrap justify-center gap-1 opacity-80">
+        {[...Array(60)].map((_, i) => (
+          <motion.div key={i} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.01 }} className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${Math.random() > 0.7 ? 'bg-emerald-500' : Math.random() > 0.4 ? 'bg-emerald-900' : 'bg-slate-800'}`} />
+        ))}
       </div>
-    </section>
-  );
-};
+      <p className="mt-4 text-sm text-slate-500">Contributions sur les 2 derniers mois</p>
+    </div>
+  </section>
+);
 
-// ... COMPOSANTS EXISTANTS (Parallax, Skills, Projects, Contact) ...
 const ParallaxText = ({ children, baseVelocity = 100 }) => {
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
@@ -257,10 +305,12 @@ const Skills = () => (
       <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-4xl font-bold mb-16 text-center text-white">Mon Arsenal <span className="text-blue-500">Technique</span></motion.h2>
       <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="grid md:grid-cols-3 gap-8">
         {skills.map((cat, idx) => (
-          <motion.div key={idx} variants={itemVariants} className="bg-slate-900/50 p-8 rounded-2xl border border-slate-800 hover:border-blue-500/30 transition-colors backdrop-blur-sm">
-            <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 mb-6">{cat.icon}</div>
-            <h3 className="text-xl font-bold mb-4 text-white">{cat.name}</h3>
-            <div className="flex flex-wrap gap-2">{cat.items.map((s) => <span key={s} className="px-3 py-1 bg-slate-800/80 rounded-md text-sm text-slate-300 border border-slate-700">{s}</span>)}</div>
+          <motion.div key={idx} variants={itemVariants} className="h-full">
+            <SpotlightCard className="p-8 rounded-2xl h-full group">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 mb-6 transition-transform duration-300 group-hover:scale-110">{cat.icon}</div>
+              <h3 className="text-xl font-bold mb-4 text-white">{cat.name}</h3>
+              <div className="flex flex-wrap gap-2">{cat.items.map((s) => <span key={s} className="px-3 py-1 bg-slate-800/80 rounded-md text-sm text-slate-300 border border-slate-700">{s}</span>)}</div>
+            </SpotlightCard>
           </motion.div>
         ))}
       </motion.div>
@@ -274,15 +324,17 @@ const Projects = () => (
       <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-4xl font-bold mb-16 text-center text-white">Projets <span className="text-cyan-500">Sélectionnés</span></motion.h2>
       <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="grid md:grid-cols-3 gap-8">
         {projects.map((p, i) => (
-          <motion.div key={i} variants={itemVariants} whileHover={{ y: -10 }} className="h-full relative bg-slate-900/80 backdrop-blur-sm rounded-2xl border border-slate-800 overflow-hidden group hover:border-blue-500/30 transition-colors hover:shadow-2xl hover:shadow-blue-500/10">
-              <div className={`h-2 bg-gradient-to-r ${p.color}`} />
-              <div className="p-8">
-                <div className="mb-6 inline-flex p-3 rounded-xl bg-slate-800 text-white"><Code2 size={24} /></div>
-                <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">{p.title}</h3>
-                <p className="text-slate-400 mb-6 leading-relaxed">{p.desc}</p>
-                <div className="flex flex-wrap gap-2 mb-8">{p.tech.map((t) => <span key={t} className="text-xs font-mono text-blue-200 bg-blue-500/10 px-2 py-1 rounded">{t}</span>)}</div>
-                <div className="flex items-center gap-4"><a href={p.github} className="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2"><Github size={16} /> Code</a>{p.demo && <a href={p.demo} className="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-2"><ExternalLink size={16} /> Live Demo</a>}</div>
-              </div>
+          <motion.div key={i} variants={itemVariants} whileHover={{ y: -10 }} className="h-full">
+             <SpotlightCard className="h-full rounded-2xl">
+                <div className={`h-2 bg-gradient-to-r ${p.color}`} />
+                <div className="p-8">
+                  <div className="mb-6 inline-flex p-3 rounded-xl bg-slate-800 text-white"><Code2 size={24} /></div>
+                  <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">{p.title}</h3>
+                  <p className="text-slate-400 mb-6 leading-relaxed">{p.desc}</p>
+                  <div className="flex flex-wrap gap-2 mb-8">{p.tech.map((t) => <span key={t} className="text-xs font-mono text-blue-200 bg-blue-500/10 px-2 py-1 rounded">{t}</span>)}</div>
+                  <div className="flex items-center gap-4"><a href={p.github} className="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2"><Github size={16} /> Code</a>{p.demo && <a href={p.demo} className="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-2"><ExternalLink size={16} /> Live Demo</a>}</div>
+                </div>
+             </SpotlightCard>
           </motion.div>
         ))}
       </motion.div>
@@ -295,7 +347,8 @@ const Contact = () => (
     <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
       <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl font-bold mb-8 text-white">Prêt à coder ?</motion.h2>
       <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-slate-400 mb-12 text-lg">Je suis actuellement à la recherche d'une alternance.</motion.p>
-      <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex justify-center gap-6">
+      
+      <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex justify-center gap-6 mt-12">
         {[ { icon: <Mail />, href: "mailto:tonemail@gmail.com" }, { icon: <Github />, href: "https://github.com" }, { icon: <Linkedin />, href: "https://linkedin.com" } ].map((social, i) => (
           <motion.a key={i} variants={itemVariants} whileHover={{ y: -5, scale: 1.1 }} href={social.href} className="p-4 bg-slate-800 rounded-full border border-slate-700 text-white hover:bg-blue-600 hover:border-blue-500 transition-all">{social.icon}</motion.a>
         ))}
@@ -307,7 +360,16 @@ const Contact = () => (
 
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
-  return <motion.div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 origin-left z-[100]" style={{ scaleX: useSpring(scrollYProgress, { stiffness: 100, damping: 30 }) }} />;
+  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  return (
+    <div className="fixed z-[100] right-6 top-1/2 -translate-y-1/2 h-96 w-3 rounded-full bg-slate-800/40 backdrop-blur-xl border border-white/10 shadow-lg overflow-hidden p-[2px]">
+      <motion.div
+        className="w-full h-full bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full origin-top"
+        style={{ scaleY }}
+      />
+    </div>
+  );
 };
 
 export default function App() {
