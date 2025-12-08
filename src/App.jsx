@@ -74,10 +74,10 @@ const itemVariants = {
 // --- DONNÉES ---
 const projects = [
   {
-    title: "SaaS Indépendant",
-    desc: "Dashboard analytique pour freelances. Architecture complexe (Auth, API, BDD) pour un apprentissage approfondi du SaaS.",
-    tech: ["En developpement"],
-    github: "#", demo: null, 
+    title: "Site Vitrine Restaurant",
+    desc: "Site de démonstration conçu pour le démarchage de restaurants. Vitrine complète et responsive pour présenter menus et ambiance.",
+    tech: ["HTML/CSS/JS", "PHP", "Responsive"],
+    demo: "https://ubud-restaurant.alwaysdata.net/index.php", 
     color: "from-blue-500 to-cyan-500" 
   },
   {
@@ -104,8 +104,8 @@ const skills = [
 
 const timelineData = [
   { year: "2025 - Présent", title: "Bachelor Pro Développeur Full Stack", place: "ESEO, Angers", desc: "Algorithmique • Frontend/Backend • Bases de données • POO • Réseau • Cybersécurité • Web3 • Gestion de projet Agile." },
-  { year: "2024 - Présent", title: "Expériences Professionnelles", place: "Nantes-Angers", desc: "Équipier polyvalent Domino’s Pizza – Agent de quai DPD – Livreur Deliveroo (actuel)." },
-  { year: "2024", title: "Formation Web3 & Stage", place: "BBS School / Metafight", desc: "Formation intensive de 3 mois sur la Blockchain, suivie d’un stage d’un mois chez Metafight." },
+  { year: "2024 - Présent", title: "Expériences Professionnelles", place: "Nantes-Angers", desc: "Équipier polyvalent Domino's Pizza – Agent de quai DPD – Livreur Deliveroo (actuel)." },
+  { year: "2024", title: "Formation Web3 & Stage", place: "BBS School / Metafight", desc: "Formation intensive de 3 mois sur la Blockchain, suivie d'un stage d'un mois chez Metafight." },
 ];
 
 // --- FOND ---
@@ -189,7 +189,8 @@ const Hero = () => {
           
           <motion.a 
             href="/cv.pdf" 
-            target="_blank" 
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{
@@ -210,34 +211,163 @@ const Hero = () => {
   );
 };
 
-const TerminalBox = () => (
-  <section className="py-20 px-4 max-w-4xl mx-auto">
-    <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-[#0f172a]/90 backdrop-blur-md rounded-xl border border-slate-700 shadow-2xl overflow-hidden font-mono text-sm md:text-base">
-      <div className="bg-slate-800/50 px-4 py-3 flex items-center gap-2 border-b border-slate-700">
-        <div className="w-3 h-3 rounded-full bg-red-500"></div><div className="w-3 h-3 rounded-full bg-yellow-500"></div><div className="w-3 h-3 rounded-full bg-green-500"></div>
-        <span className="ml-2 text-slate-400 text-xs">maxime@portfolio: ~</span>
-      </div>
-      <div className="p-6 space-y-6 text-slate-300">
-        
-        <div>
-          <div className="flex gap-2">
-            <span className="text-blue-400">➜</span>
-            <span className="text-purple-400">~</span>
-            <span className="text-slate-200">whoami</span>
-          </div>
-          <div className="mt-3 text-slate-400 pl-4 space-y-3 leading-relaxed">
-            <p>Âgé de 21 ans, je suis actuellement en Bachelor Pro Développeur Full Stack à l'ESEO d'Angers. Passionné d'informatique depuis l'adolescence, j'ai d'abord exploré l'univers du montage de PC, puis celui des cryptomonnaies, avant de me diriger naturellement vers le développement.</p>
-            <p>Mon parcours n'a pas été linéaire : après un Bac Pro Vente puis un BTS SAM qui ne correspondaient pas à mes ambitions, j'ai choisi de me réorienter. J'ai suivi une formation et un stage au sein de la BBS School, puis travaillé comme équipier polyvalent chez Domino's Pizza.</p>
-            <p>J'ai ensuite entrepris un voyage en solo d'un mois à Bali, une expérience marquante qui m'a permis de prendre du recul, de rencontrer de nouvelles personnes et de clarifier mes objectifs professionnels. À mon retour, j'ai trouvé ma voie : intégrer l'ESEO, une grande école d'ingénieurs reconnue, pour me former aux métiers du développement.</p>
-            <p>Pour financer mes études, j'ai travaillé chez DPD, et j'exerce aujourd'hui un job étudiant en tant que livreur Deliveroo, tout en poursuivant ma formation.</p>
-            <p>Ce parcours m'a appris la détermination, l'autonomie et la capacité à m'adapter. Aujourd'hui, je suis pleinement engagé dans mon objectif : devenir un développeur compétent, polyvalent et passionné.</p>
-          </div>
+const TerminalBox = () => {
+  const [typedText, setTypedText] = useState('');
+  const [showContent, setShowContent] = useState(false);
+  const fullCommand = 'cat ~/story.txt';
+
+  React.useEffect(() => {
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullCommand.length) {
+        setTypedText(fullCommand.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+        setTimeout(() => setShowContent(true), 300);
+      }
+    }, 80);
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
+  return (
+    <section className="py-20 px-4 max-w-4xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        viewport={{ once: true }} 
+        className="bg-[#0f172a]/90 backdrop-blur-md rounded-xl border border-slate-700 shadow-2xl overflow-hidden font-mono text-sm md:text-base"
+      >
+        <div className="bg-slate-800/50 px-4 py-3 flex items-center gap-2 border-b border-slate-700">
+          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <span className="ml-2 text-slate-400 text-xs">maxime@portfolio: ~</span>
         </div>
-        <div className="flex gap-2 items-center"><span className="text-blue-400">➜</span><span className="text-purple-400">~</span><motion.div animate={{ opacity: [0, 1, 0] }} transition={{ duration: 0.8, repeat: Infinity }} className="w-2.5 h-5 bg-slate-400"/></div>
-      </div>
-    </motion.div>
-  </section>
-);
+        
+        <div className="p-6 space-y-6 text-slate-300">
+          <div>
+            <div className="flex gap-2 items-center">
+              <span className="text-blue-400">➜</span>
+              <span className="text-purple-400">~</span>
+              <span className="text-slate-200">{typedText}</span>
+              {!showContent && (
+                <motion.div 
+                  animate={{ opacity: [0, 1, 0] }} 
+                  transition={{ duration: 0.8, repeat: Infinity }} 
+                  className="w-2.5 h-5 bg-slate-400"
+                />
+              )}
+            </div>
+            
+            <AnimatePresence>
+              {showContent && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: 'auto' }} 
+                  transition={{ duration: 0.5 }}
+                  className="mt-4 text-slate-400 space-y-4 leading-relaxed overflow-hidden"
+                >
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ delay: 0.1 }}
+                  >
+                    <span className="text-emerald-400">21 ans</span> • <span className="text-blue-400">Bachelor Pro Full Stack</span> @ <span className="text-purple-400">ESEO Angers</span>
+                  </motion.p>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ delay: 0.3 }}
+                  >
+                    Passionné d'informatique depuis l'adolescence : <span className="text-cyan-400">montage PC</span> → <span className="text-yellow-400">crypto</span> → <span className="text-emerald-400">développement</span>
+                  </motion.p>
+                  
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ delay: 0.5 }}
+                    className="pl-4 border-l-2 border-slate-700"
+                  >
+                    <p className="text-slate-500 italic">
+                      "Parcours non linéaire : Bac Pro Vente → BTS SAM → Réorientation"
+                    </p>
+                  </motion.div>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ delay: 0.7 }}
+                  >
+                    <span className="text-orange-400">BBS School</span> (Web3 + Stage) → <span className="text-red-400">Domino's Pizza</span> → <span className="text-pink-400">✈️ Bali 1 mois</span> (solo trip)
+                  </motion.p>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    transition={{ delay: 0.9 }}
+                  >
+                    De retour en France : intégration <span className="text-indigo-400">ESEO</span> (école d'ingénieurs) • Jobs : <span className="text-slate-300">DPD</span> + <span className="text-green-400">Deliveroo</span> (actuel)
+                  </motion.p>
+                  
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 1.1 }}
+                    className="pt-4 mt-4 border-t border-slate-800"
+                  >
+                    <p className="text-blue-300">
+                      <span className="text-emerald-400 font-bold">$ mission</span> : Devenir un développeur{' '}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        compétent, polyvalent et passionné
+                      </span>
+                    </p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    transition={{ delay: 1.3 }}
+                    className="flex flex-wrap gap-2 pt-2"
+                  >
+                    <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded border border-emerald-500/20">
+                      Déterminé
+                    </span>
+                    <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded border border-blue-500/20">
+                      Autonome
+                    </span>
+                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 text-xs rounded border border-purple-500/20">
+                      Adaptable
+                    </span>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          
+          {showContent && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              transition={{ delay: 1.5 }}
+              className="flex gap-2 items-center"
+            >
+              <span className="text-blue-400">➜</span>
+              <span className="text-purple-400">~</span>
+              <motion.div 
+                animate={{ opacity: [0, 1, 0] }} 
+                transition={{ duration: 0.8, repeat: Infinity }} 
+                className="w-2.5 h-5 bg-slate-400"
+              />
+            </motion.div>
+          )}
+        </div>
+      </motion.div>
+    </section>
+  );
+};
 
 const Timeline = () => (
   <section id="parcours" className="py-20 px-4 max-w-4xl mx-auto">
@@ -332,7 +462,16 @@ const Projects = () => (
                   <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">{p.title}</h3>
                   <p className="text-slate-400 mb-6 leading-relaxed">{p.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-8">{p.tech.map((t) => <span key={t} className="text-xs font-mono text-blue-200 bg-blue-500/10 px-2 py-1 rounded">{t}</span>)}</div>
-                  <div className="flex items-center gap-4"><a href={p.github} className="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2"><Github size={16} /> Code</a>{p.demo && <a href={p.demo} className="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-2"><ExternalLink size={16} /> Live Demo</a>}</div>
+                  <div className="flex items-center gap-4">
+                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-300 hover:text-white flex items-center gap-2">
+                      <Github size={16} /> Code
+                    </a>
+                    {p.demo && (
+                      <a href={p.demo} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-2">
+                        <ExternalLink size={16} /> Live Demo
+                      </a>
+                    )}
+                  </div>
                 </div>
              </SpotlightCard>
           </motion.div>
@@ -349,8 +488,22 @@ const Contact = () => (
       <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-slate-400 mb-12 text-lg">Je suis actuellement à la recherche d'une alternance.</motion.p>
       
       <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex justify-center gap-6 mt-12">
-        {[ { icon: <Mail />, href: "mailto:tonemail@gmail.com" }, { icon: <Github />, href: "https://github.com" }, { icon: <Linkedin />, href: "https://linkedin.com" } ].map((social, i) => (
-          <motion.a key={i} variants={itemVariants} whileHover={{ y: -5, scale: 1.1 }} href={social.href} className="p-4 bg-slate-800 rounded-full border border-slate-700 text-white hover:bg-blue-600 hover:border-blue-500 transition-all">{social.icon}</motion.a>
+        {[ 
+          { icon: <Mail />, href: "mailto:tonemail@gmail.com" }, 
+          { icon: <Github />, href: "https://github.com", target: "_blank" }, 
+          { icon: <Linkedin />, href: "https://linkedin.com", target: "_blank" } 
+        ].map((social, i) => (
+          <motion.a 
+            key={i} 
+            variants={itemVariants} 
+            whileHover={{ y: -5, scale: 1.1 }} 
+            href={social.href} 
+            target={social.target} 
+            rel={social.target ? "noopener noreferrer" : undefined} 
+            className="p-4 bg-slate-800 rounded-full border border-slate-700 text-white hover:bg-blue-600 hover:border-blue-500 transition-all"
+          >
+            {social.icon}
+          </motion.a>
         ))}
       </motion.div>
       <footer className="mt-20 pt-8 border-t border-slate-800/50 text-slate-600 text-sm">© 2025 • Designé & Codé avec passion.</footer>
