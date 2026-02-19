@@ -77,14 +77,14 @@ const projects = [
     title: "Site Vitrine Restaurant",
     desc: "Site de démonstration conçu pour le démarchage de restaurants. Vitrine complète et responsive pour présenter menus et ambiance.",
     tech: ["HTML/CSS/JS", "PHP", "Responsive"],
-    demo: "https://ubud-restaurant.alwaysdata.net/index.php", 
+    github: null, demo: "https://ubud-restaurant.alwaysdata.net/index.php", 
     color: "from-blue-500 to-cyan-500" 
   },
   {
     title: "Master M&A",
     desc: "Site vitrine officiel pour l'association du Master 2 Paris Saclay. Design institutionnel, animations douces et SEO.",
-    tech: ["HTML/CSS", "JS", "SEO"],
-    github: "#", demo: "#", 
+    tech: ["HTML/CSS", "JS", "SEO", "RESPONSIVE"],
+    github: "https://github.com/max13003/ProjetWebMaster", demo: "http://master-fusac.alwaysdata.net/", 
     color: "from-indigo-500 to-blue-600" 
   },
   {
@@ -98,8 +98,8 @@ const projects = [
 
 const skills = [
   { name: "Frontend", icon: <Code2 size={32} />, items: ["HTML", "CSS", "JS", "React (Learning)", "Tailwind (Learning)", "Framer Motion (Learning)"] },
-  { name: "Backend", icon: <Database size={32} />, items: ["PHP", "MySQL"] },
-  { name: "Outils", icon: <Terminal size={32} />, items: ["Git", "VS Code", "Figma", "Vercel", "Trello"] },
+  { name: "Backend", icon: <Database size={32} />, items: ["JAVA", "PHP", "MySQL"] },
+  { name: "Outils", icon: <Terminal size={32} />, items: ["Git", "Gituhb", "VS Code","IntelliJ", "Figma", "Vercel", "Trello"] },
 ];
 
 const timelineData = [
@@ -174,13 +174,13 @@ const Hero = () => {
     <section id="accueil" className="min-h-screen flex items-center justify-center pt-32 relative overflow-hidden">
       <div className="text-center px-4 max-w-5xl mx-auto z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-blue-300 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> Recherche Alternance
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>A la recherche d'une alternance pour septembre 2026, 2 ans et plus si affinité
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-8xl font-bold mb-6 text-white tracking-tight">
           Développeur <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient">Full Stack</span>
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-slate-400 max-w-2xl mx-auto text-lg md:text-xl mb-10 leading-relaxed">
-          Je construis des expériences web modernes et performantes.
+          2 semaines à l'école - 2 semaines en entreprise
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row justify-center gap-4">
           <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projets" className="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold transition-all flex items-center justify-center gap-2">
@@ -188,7 +188,7 @@ const Hero = () => {
           </motion.a>
           
           <motion.a 
-            href="/cv.pdf" 
+            href="/CvMaximeLUNEAU.pdf" 
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
@@ -282,7 +282,7 @@ const TerminalBox = () => {
                     animate={{ opacity: 1, x: 0 }} 
                     transition={{ delay: 0.3 }}
                   >
-                    Passionné d'informatique depuis l'adolescence : <span className="text-cyan-400">montage PC</span> → <span className="text-yellow-400">crypto</span> → <span className="text-emerald-400">développement</span>
+                    Passionné d'informatique depuis l'adolescence : <span className="text-cyan-400">montage PC</span> → <span className="text-yellow-400">blockchain</span> → <span className="text-emerald-400">développement</span>
                   </motion.p>
                   
                   <motion.div 
@@ -484,12 +484,12 @@ const Projects = () => (
 const Contact = () => (
   <section id="contact" className="py-32 relative">
     <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-      <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl font-bold mb-8 text-white">Prêt à coder ?</motion.h2>
-      <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-slate-400 mb-12 text-lg">Je suis actuellement à la recherche d'une alternance.</motion.p>
+      <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl font-bold mb-8 text-white">SKY IS THE LIMIT</motion.h2>
+      <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-slate-400 mb-12 text-lg">Pret à passer un entretien demain !</motion.p>
       
       <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex justify-center gap-6 mt-12">
         {[ 
-          { icon: <Mail />, href: "mailto:tonemail@gmail.com" }, 
+          { icon: <Mail />, href: "mailto:maximeluneau3@gmail.com" }, 
           { icon: <Github />, href: "https://github.com", target: "_blank" }, 
           { icon: <Linkedin />, href: "https://linkedin.com", target: "_blank" } 
         ].map((social, i) => (
@@ -506,7 +506,7 @@ const Contact = () => (
           </motion.a>
         ))}
       </motion.div>
-      <footer className="mt-20 pt-8 border-t border-slate-800/50 text-slate-600 text-sm">© 2025 • Designé & Codé avec passion.</footer>
+      <footer className="mt-20 pt-8 border-t border-slate-800/50 text-slate-600 text-sm">© 2025 • Designé & Codé par Maxime LUNEAU.</footer>
     </div>
   </section>
 );
@@ -534,7 +534,7 @@ export default function App() {
       <Hero />
       <TerminalBox />
       <section className="py-10 border-y border-slate-800/50 bg-slate-900/30 backdrop-blur-sm">
-        <ParallaxText baseVelocity={-2}>REACT • NODE.JS • PHP • MYSQL • FULL STACK •</ParallaxText>
+        <ParallaxText baseVelocity={-1}>HTML • JS • PHP • MYSQL • FULL STACK • JAVA • CSS •</ParallaxText>
       </section>
       <Timeline />
       <GithubActivity />
