@@ -392,19 +392,61 @@ const Timeline = () => (
   </section>
 );
 
-const GithubActivity = () => (
-  <section className="py-20 border-y border-slate-800/50 bg-slate-900/30">
-    <div className="max-w-4xl mx-auto px-6 text-center">
-      <h2 className="text-2xl font-bold mb-8 text-white flex items-center justify-center gap-2"><Github /> Activité GitHub</h2>
-      <div className="flex flex-wrap justify-center gap-1 opacity-80">
-        {[...Array(60)].map((_, i) => (
-          <motion.div key={i} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.01 }} className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${Math.random() > 0.7 ? 'bg-emerald-500' : Math.random() > 0.4 ? 'bg-emerald-900' : 'bg-slate-800'}`} />
-        ))}
+const GithubActivity = () => {
+  const stats = [
+    { label: "Repositories", value: "11", icon: <Folder size={20} /> },
+    { label: "Contributions (2025)", value: "54", icon: <GitCommit size={20} /> },
+    { label: "Projets Web", value: "3", icon: <Code2 size={20} /> },
+    { label: "Followers", value: "2", icon: <User size={20} /> },
+  ];
+
+  return (
+    <section className="py-24 border-y border-slate-800/50 bg-slate-900/30">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+          
+          <div className="text-left max-w-md">
+            <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+              <Github className="text-blue-500" /> Open Source
+            </h2>
+            <p className="text-slate-400 leading-relaxed mb-6">
+              Je partage l'ensemble de mes projets d'études et personnels sur GitHub. 
+              Mon code est public, transparent et reflète ma progression quotidienne.
+            </p>
+            <motion.a 
+              href="https://github.com/max13003"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ x: 5 }}
+              className="text-blue-400 font-bold flex items-center gap-2 group"
+            >
+              Explorer mon compte @max13003 
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </motion.a>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <SpotlightCard className="p-6 rounded-2xl min-w-[160px] text-center">
+                  <div className="text-blue-500 mb-2 flex justify-center">{stat.icon}</div>
+                  <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs uppercase tracking-wider text-slate-500 font-semibold">{stat.label}</div>
+                </SpotlightCard>
+              </motion.div>
+            ))}
+          </div>
+
+        </div>
       </div>
-      <p className="mt-4 text-sm text-slate-500">Contributions sur les 2 derniers mois</p>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const ParallaxText = ({ children, baseVelocity = 100 }) => {
   const baseX = useMotionValue(0);
