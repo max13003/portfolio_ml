@@ -75,14 +75,14 @@ const itemVariants = {
 const projects = [
   {
     title: "Site Vitrine Restaurant",
-    desc: "Site de démonstration conçu pour le démarchage de restaurants. Vitrine complète et responsive pour présenter menus et ambiance.",
+    desc: "Site de démonstration conçu pour le démarchage de restaurants afin de leur proposer mes services. Vitrine complète et responsive pour présenter menus et ambiance.",
     tech: ["HTML/CSS/JS", "PHP", "Responsive"],
     github: null, demo: "https://ubud-restaurant.alwaysdata.net/index.php", 
     color: "from-blue-500 to-cyan-500" 
   },
   {
     title: "Master M&A",
-    desc: "Site vitrine officiel pour l'association du Master 2 Paris Saclay. Design institutionnel, animations douces et SEO.",
+    desc: "Site vitrine officiel pour l'association du Master 2 Fusions & acquisitions Paris Saclay. Responsive, design institutionnel, animations douces et SEO.",
     tech: ["HTML/CSS", "JS", "SEO", "RESPONSIVE"],
     github: "https://github.com/max13003/ProjetWebMaster", demo: "http://master-fusac.alwaysdata.net/", 
     color: "from-indigo-500 to-blue-600" 
@@ -99,7 +99,7 @@ const projects = [
 const skills = [
   { name: "Frontend", icon: <Code2 size={32} />, items: ["HTML", "CSS", "JS", "React (Learning)", "Tailwind (Learning)", "Framer Motion (Learning)"] },
   { name: "Backend", icon: <Database size={32} />, items: ["JAVA", "PHP", "MySQL"] },
-  { name: "Outils", icon: <Terminal size={32} />, items: ["Git", "Gituhb", "VS Code","IntelliJ", "Figma", "Vercel", "Trello"] },
+  { name: "Outils", icon: <Terminal size={32} />, items: ["Git", "Github", "VS Code","IntelliJ", "Figma", "Vercel", "Trello"] },
 ];
 
 const timelineData = [
@@ -174,7 +174,7 @@ const Hero = () => {
     <section id="accueil" className="min-h-screen flex items-center justify-center pt-32 relative overflow-hidden">
       <div className="text-center px-4 max-w-5xl mx-auto z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-blue-300 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>A la recherche d'une alternance pour septembre 2026, 2 ans et plus si affinité
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>A la recherche d'une alternance pour septembre 2026, 2 ans et plus si affinité ;)
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-8xl font-bold mb-6 text-white tracking-tight">
           Développeur <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient">Full Stack</span>
@@ -274,7 +274,7 @@ const TerminalBox = () => {
                     animate={{ opacity: 1, x: 0 }} 
                     transition={{ delay: 0.1 }}
                   >
-                    <span className="text-emerald-400">21 ans</span> • <span className="text-blue-400">Bachelor Pro Full Stack</span> @ <span className="text-purple-400">ESEO Angers</span>
+                    <span className="text-emerald-400">21 ans</span> • <span className="text-blue-400">Bachelor Pro Developpeur Full Stack</span> @ <span className="text-purple-400">ESEO Angers</span>
                   </motion.p>
                   
                   <motion.p 
@@ -516,7 +516,7 @@ const ScrollProgress = () => {
   const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   return (
-    <div className="fixed z-[100] right-6 top-1/2 -translate-y-1/2 h-96 w-3 rounded-full bg-slate-800/40 backdrop-blur-xl border border-white/10 shadow-lg overflow-hidden p-[2px]">
+    <div className="hidden xl:block fixed z-[100] right-8 top-1/2 -translate-y-1/2 h-96 w-3 rounded-full bg-slate-800/40 backdrop-blur-xl border border-white/10 shadow-lg overflow-hidden p-[2px]">
       <motion.div
         className="w-full h-full bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full origin-top"
         style={{ scaleY }}
