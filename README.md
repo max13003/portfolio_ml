@@ -1,16 +1,40 @@
-# React + Vite
+# 🚀 Portfolio Personnel - Maxime LUNEAU
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bienvenue sur le dépôt de mon portfolio interactif. Ce projet a été conçu pour présenter mon parcours, mes compétences techniques et mes réalisations en tant qu'étudiant en **Bachelor Pro Développeur Full Stack** à l'ESEO Angers.
 
-Currently, two official plugins are available:
+![Aperçu du Portfolio](./src/assets/preview.png) ## 🛠️ Stack Technique
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧠 Apprentissage & Méthodologie
 
-## React Compiler
+Ce projet s'inscrit dans ma démarche d'apprentissage en autonomie. Étant actuellement en première année de Bachelor, j'ai choisi de sortir de ma zone de confort en utilisant des technologies non encore abordées en cours pour le moment :
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Auto-formation :** Apprentissage des bases de **React**, **Tailwind CSS** et de la bibliothèque d'animation **Framer Motion** spécifiquement pour ce projet.
+* **Utilisation de l'IA :** Ce portfolio a été réalisé avec l'assistance d'une Intelligence Artificielle. J'ai utilisé cet outil comme un "binôme de programmation" pour structurer mon code, comprendre les concepts de hooks React (`useState`, `useRef`) et déboguer les problématiques de responsive design.
+* **Objectif :** Allier ma curiosité technique à des outils modernes pour produire un résultat professionnel tout en accélérant ma montée en compétences.
 
-## Expanding the ESLint configuration
+Ce portfolio a été développé avec des technologies modernes pour garantir performance, interactivité et un design soigné :
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Framework :** [React.js](https://reactjs.org/)
+* **Styling :** [Tailwind CSS](https://tailwindcss.com/) (Utilitaires CSS pour un design responsive)
+* **Animations :** [Framer Motion](https://www.framer.com/motion/) (Animations complexes, effets de scroll et spotlight)
+* **Icônes :** [Lucide React](https://lucide.dev/)
+* **Déploiement :** [Vercel](https://vercel.com/) (ou GitHub Pages)
+
+## ✨ Fonctionnalités clés
+
+- **Design Responsive :** Optimisé pour Mobile, Tablette (iPad) et Desktop.
+- **Terminal Interactif :** Une section "Story" simulant un terminal Linux pour présenter mon parcours atypique.
+- **Spotlight Cards :** Effet de lumière dynamique suivant le curseur sur les cartes de projets et compétences.
+- **Parallax Scrolling :** Bandes de texte défilantes et indicateur de progression fluide.
+- **Dark Mode Native :** Une interface sombre et moderne axée sur l'expérience utilisateur.
+
+## 📁 Structure du Projet
+
+```text
+src/
+ ├── assets/          # Images et ressources statiques
+ ├── components/      # Composants React (Hero, Projects, Terminal, etc.)
+ ├── App.js           # Composant principal avec la logique de routing/scroll
+ └── index.css        # Configuration Tailwind
+public/
+ └── CvMaximeLUNEAU.pdf # Mon CV accessible au téléchargement
